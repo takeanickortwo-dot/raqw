@@ -1,4 +1,3 @@
-<antArtifact identifier="cut-the-clip-unified" type="text/html" title="CUT THE CLIP · Unified Atelier">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -158,6 +157,16 @@ main{flex:1;overflow:hidden;position:relative}
 #studio-tab{flex-direction:column}
 .studio-sidebar{width:100%;height:30%;border-left:none;border-top:1px solid var(--border)}
 }
+
+.clip-pool{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:260px;overflow-y:auto;padding-right:4px}
+.pool-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all .15s;position:relative}
+.pool-item:hover{border-color:var(--accent)}
+.pool-item img{width:100%;height:70px;object-fit:cover;background:#000;display:block}
+.pool-item .pool-name{padding:6px 8px;font-size:0.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pool-item .pool-dur{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.7);padding:2px 6px;border-radius:4px;font-size:0.65rem;font-family:var(--font-mono)}
+.pool-item button{width:100%;border-radius:0;border:none;border-top:1px solid var(--border);padding:6px;font-size:0.7rem;background:var(--surface3);color:var(--text)}
+.pool-item button:hover{background:var(--accent);color:#000}
+
 </style>
 </head>
 <body>
@@ -245,7 +254,15 @@ plain
       </div>
 
       <div id="vibeResult" style="font-size:0.8rem;color:var(--text2);line-height:1.5"></div>
-    </div>
+    
+      <hr>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <label>Clip Pool</label>
+        <span id="poolCount" style="font-size:0.75rem;color:var(--text2)">0 clips</span>
+      </div>
+      <div class="clip-pool" id="clipPool"></div>
+      <button class="small" onclick="clearPool()" style="width:100%;margin-top:8px">🗑 Clear Pool</button>
+</div>
   </div>
 
   <div class="main-stage">
@@ -475,25 +492,44 @@ function addClip(file){
   video.onloadedmetadata=()=>{
     const dur=video.duration||0;
     const clip={id,file,url,video,dur,width:video.videoWidth||1920,height:video.videoHeight||1080,energy:Math.random(),thumb:null};
-    // capture thumb
-    const c=document.createElement('canvas');c.width=160;c.height=90;
-    const x=c.getContext('2d');
-    video.currentTime=Math.min(1,dur/2);
+    // capture thumb at 25% mark or 0.5s
+    const seekTime=Math.min(Math.max(0.5,dur*0.25),dur-0.1)||0.5;
+    video.currentTime=seekTime;
     video.onseeked=()=>{
-      x.drawImage(video,0,0,160,90);
+      const c=document.createElement('canvas');c.width=160;c.height=90;
+      const x=c.getContext('2d');
+      try{x.drawImage(video,0,0,160,90);}catch(e){}
       clip.thumb=c.toDataURL('image/jpeg',0.6);
       App.clips.push(clip);
       renderPool();updateTimelineInfo();
+      if(App.timeline.length===0){addToTimeline(clip.id);}
       toast(`Added ${file.name}`);
     };
-    if(video.readyState>=2){video.onseeked();}
   };
   video.onerror=()=>toast('Failed to load '+file.name,'error');
 }
 
 function renderPool(){
-  // clips live in timeline now, pool is implicit
+  const pool=$('clipPool');if(!pool)return;
+  pool.innerHTML='';
+  $('poolCount').textContent=App.clips.length+' clips';
+  for(let i=0;i<App.clips.length;i++){
+    const c=App.clips[i];
+    const el=document.createElement('div');el.className='pool-item';el.draggable=true;
+    el.innerHTML=`<img src="${c.thumb||''}" onerror="this.style.opacity=0;this.style.background='#111'"><div class="pool-dur">${formatTime(c.dur)}</div><div class="pool-name">${c.file.name.slice(0,18)}</div><button class="small" onclick="event.stopPropagation();addToTimeline('${c.id}')">+ Add to Timeline</button>`;
+    el.onclick=(e)=>{if(e.target.tagName!=='BUTTON')addToTimeline(c.id);};
+    el.ondragstart=e=>{e.dataTransfer.setData('clipId',c.id);e.dataTransfer.effectAllowed='copy';el.style.opacity='0.5';};
+    el.ondragend=e=>{el.style.opacity='1';};
+    pool.appendChild(el);
+  }
 }
+function clearPool(){
+  App.clips.forEach(c=>URL.revokeObjectURL(c.url));
+  App.clips=[];
+  renderPool();updateTimelineInfo();
+  toast('Pool cleared');
+}
+
 
 /* ─── MUSIC / BPM ─── */
 async function handleMusicFile(file){
@@ -970,6 +1006,14 @@ $('musicDrop').addEventListener('dragenter',e=>{$('musicDrop').classList.add('dr
 $('musicDrop').addEventListener('dragleave',e=>{$('musicDrop').classList.remove('dragover');});
 $('musicDrop').addEventListener('drop',e=>{$('musicDrop').classList.remove('dragover');handleMusicFile(e.dataTransfer.files[0]);});
 
+// Timeline track accepts drops from pool
+$('timelineTrack').addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='copy';});
+$('timelineTrack').addEventListener('drop',e=>{
+  e.preventDefault();
+  const clipId=e.dataTransfer.getData('clipId');
+  if(clipId){addToTimeline(clipId);return;}
+});
+
 /* ─── INIT ─── */
 window.addEventListener('DOMContentLoaded',()=>{
   toast('✂️ Unified Atelier loaded');
@@ -981,4 +1025,3 @@ window.addEventListener('DOMContentLoaded',()=>{
 </script>
 </body>
 </html>
-</antArtifact>
