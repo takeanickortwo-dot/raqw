@@ -167,6 +167,13 @@ main{flex:1;overflow:hidden;position:relative}
 .pool-item button{width:100%;border-radius:0;border:none;border-top:1px solid var(--border);padding:6px;font-size:0.7rem;background:var(--surface3);color:var(--text)}
 .pool-item button:hover{background:var(--accent);color:#000}
 
+
+.timeline-item .trim-row{display:flex;gap:4px;padding:4px 6px;border-top:1px solid var(--border);background:var(--surface3)}
+.timeline-item .trim-row input[type=number]{width:42px;padding:2px 4px;font-size:0.65rem;font-family:var(--font-mono);text-align:center}
+.timeline-item .trim-row span{font-size:0.6rem;color:var(--text2);align-self:center}
+.timeline-item .trim-slider{width:100%;height:4px;margin:4px 6px;-webkit-appearance:none;background:var(--surface3);border-radius:2px}
+.timeline-item .trim-slider::-webkit-slider-thumb{-webkit-appearance:none;width:8px;height:8px;background:var(--accent);border-radius:50%}
+
 </style>
 </head>
 <body>
@@ -177,9 +184,9 @@ main{flex:1;overflow:hidden;position:relative}
       <h1>CUT THE CLIP · Unified Atelier</h1>
     </div>
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('montage')">Montage</button>
-      <button class="tab-btn" onclick="switchTab('studio')">Studio</button>
-      <button class="tab-btn" onclick="switchTab('projects')">Projects</button>
+      <button class="tab-btn active" onclick="switchTab('montage', this)">Montage</button>
+      <button class="tab-btn" onclick="switchTab('studio', this)">Studio</button>
+      <button class="tab-btn" onclick="switchTab('projects', this)">Projects</button>
     </div>
     <div style="display:flex;gap:8px">
       <button class="small" onclick="saveProject()">💾 Save</button>
@@ -200,7 +207,6 @@ main{flex:1;overflow:hidden;position:relative}
             <button onclick="document.getElementById('fileInput').click()">Browse Files</button>
             <input type="file" id="fileInput" multiple accept="video/*" style="display:none" onchange="handleFiles(this.files)">
           </div>
-plain
       <div class="drop-zone" id="musicDrop">
         <div class="icon">🎵</div>
         <p>Drop music track for BPM sync</p>
@@ -308,11 +314,11 @@ plain
       <h3 style="font-size:0.9rem">Hybrid Studio</h3>
     </div>
     <div class="studio-tools">
-      <div class="tool-btn active" onclick="setStudioTool('move')" title="Move">↖</div>
-      <div class="tool-btn" onclick="setStudioTool('brush')" title="Brush">🖌</div>
-      <div class="tool-btn" onclick="setStudioTool('eraser')" title="Eraser">⌫</div>
-      <div class="tool-btn" onclick="setStudioTool('fill')" title="Fill">🪣</div>
-      <div class="tool-btn" onclick="setStudioTool('picker')" title="Color Picker">💉</div>
+      <div class="tool-btn active" onclick="setStudioTool('move', this)" title="Move">↖</div>
+      <div class="tool-btn" onclick="setStudioTool('brush', this)" title="Brush">🖌</div>
+      <div class="tool-btn" onclick="setStudioTool('eraser', this)" title="Eraser">⌫</div>
+      <div class="tool-btn" onclick="setStudioTool('fill', this)" title="Fill">🪣</div>
+      <div class="tool-btn" onclick="setStudioTool('picker', this)" title="Color Picker">💉</div>
     </div>
     <div class="layer-list" id="layerList"></div>
     <div class="studio-props">
@@ -433,12 +439,12 @@ function getAudioCtx(){
 }
 
 /* ─── TABS ─── */
-function switchTab(tab){
+function switchTab(tab,btn){
   App.currentTab=tab;
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   $(tab+'-tab').classList.add('active');
-  event.target.classList.add('active');
+  if(btn)btn.classList.add('active');
   if(tab==='studio')initStudio();
   if(tab==='projects')renderProjects();
 }
@@ -516,7 +522,10 @@ function renderPool(){
   for(let i=0;i<App.clips.length;i++){
     const c=App.clips[i];
     const el=document.createElement('div');el.className='pool-item';el.draggable=true;
-    el.innerHTML=`<img src="${c.thumb||''}" onerror="this.style.opacity=0;this.style.background='#111'"><div class="pool-dur">${formatTime(c.dur)}</div><div class="pool-name">${c.file.name.slice(0,18)}</div><button class="small" onclick="event.stopPropagation();addToTimeline('${c.id}')">+ Add to Timeline</button>`;
+    el.innerHTML=`<img src="${c.thumb||''}" onerror="this.style.opacity=0;this.style.background='#111'"><div class="pool-dur">${formatTime(c.dur)}</div><div class="pool-name">${c.file.name.slice(0,18)}</div>`;
+    const btn=document.createElement('button');btn.className='small';btn.textContent='+ Add to Timeline';
+    btn.onclick=(e)=>{e.stopPropagation();addToTimeline(c.id);};
+    el.appendChild(btn);
     el.onclick=(e)=>{if(e.target.tagName!=='BUTTON')addToTimeline(c.id);};
     el.ondragstart=e=>{e.dataTransfer.setData('clipId',c.id);e.dataTransfer.effectAllowed='copy';el.style.opacity='0.5';};
     el.ondragend=e=>{el.style.opacity='1';};
@@ -631,10 +640,13 @@ function parseVibe(){
   regenerateConfig();
 }
 function regenerateConfig(){
-  // apply vibe to timeline clips
-  for(let i=0;i<App.timeline.length;i++){
-    const c=App.timeline[i];
-    c.cutDur=Math.max(0.5,3.0-(App.bpm/60)+Math.random());
+  // Vibe only affects order/energy, NEVER touches user trim points
+  if(App.timeline.length===0)return;
+  // Optional: sort by energy if vibe is high
+  const raw=$('vibeInput').value.toLowerCase();
+  if(raw.includes('energy')||raw.includes('hype')||raw.includes('fast')){
+    App.timeline.sort((a,b)=>b.energy-a.energy);
+    renderTimeline();
   }
   toast('Vibe config applied');
 }
@@ -642,7 +654,8 @@ function regenerateConfig(){
 /* ─── TIMELINE ─── */
 function addToTimeline(clipId){
   const c=App.clips.find(x=>x.id===clipId);if(!c)return;
-  const t={...c,tid:uid(),cutStart:0,cutEnd:c.dur,cutDur:Math.min(c.dur,3)};
+  const dur=(c.dur&&isFinite(c.dur))?c.dur:3;
+  const t={...c,tid:uid(),cutStart:0,cutEnd:dur,cutDur:dur};
   App.timeline.push(t);renderTimeline();updateTimelineInfo();
 }
 function removeFromTimeline(tid){
@@ -661,14 +674,27 @@ function sortClips(mode){
   if(mode==='duration')App.timeline.sort((a,b)=>b.dur-a.dur);
   renderTimeline();toast('Sorted by '+mode);
 }
+function setTrim(tid,field,val){
+  const t=App.timeline.find(x=>x.tid===tid);if(!t)return;
+  const v=parseFloat(val)||0;
+  const dur=t.dur||0;
+  if(field==='start'){t.cutStart=Math.max(0,Math.min(v,t.cutEnd-0.1));}
+  if(field==='end'){t.cutEnd=Math.max(t.cutStart+0.1,Math.min(v,dur));}
+  t.cutDur=t.cutEnd-t.cutStart;
+  renderTimeline();updateTimelineInfo();
+}
 function renderTimeline(){
   const tr=$('timelineTrack');tr.innerHTML='';
   for(let i=0;i<App.timeline.length;i++){
     const t=App.timeline[i];
     const el=document.createElement('div');el.className='timeline-item';el.draggable=true;
     el.dataset.index=i;
-    el.innerHTML=`<img class="thumb" src="${t.thumb||''}" onerror="this.style.opacity=0"><div class="info">${t.file.name.slice(0,12)}</div><div class="dur">${formatTime(t.cutDur)}</div><div class="remove" onclick="event.stopPropagation();removeFromTimeline('${t.tid}')">×</div>`;
-    el.onclick=()=>playClip(t);
+    const dur=t.dur||0;
+    const start=t.cutStart||0;
+    const end=t.cutEnd||dur;
+    const len=Math.max(0.1,end-start);
+    el.innerHTML=`<img class="thumb" src="${t.thumb||''}" onerror="this.style.opacity=0"><div class="info">${t.file.name.slice(0,12)}</div><div class="dur">${formatTime(len)}</div><div class="remove" onclick="event.stopPropagation();removeFromTimeline('${t.tid}')">×</div><div class="trim-row"><span>In</span><input type="number" step="0.1" min="0" max="${dur.toFixed(1)}" value="${start.toFixed(1)}" onchange="setTrim('${t.tid}','start',this.value)"><span>Out</span><input type="number" step="0.1" min="0" max="${dur.toFixed(1)}" value="${end.toFixed(1)}" onchange="setTrim('${t.tid}','end',this.value)"></div>`;
+    el.onclick=(e)=>{if(e.target.tagName==='INPUT')return;playClip(t);};
     el.ondragstart=e=>{e.dataTransfer.setData('idx',i);el.style.opacity='0.4';};
     el.ondragend=e=>{el.style.opacity='1';};
     el.ondragover=e=>e.preventDefault();
@@ -690,8 +716,8 @@ let previewTimer=null;
 function playTimeline(){
   if(!App.timeline.length){toast('Timeline empty');return;}
   stopPreview();
-  const video=$('previewVideo');const wrap=$('previewWrap');
-  let idx=0;let start=0;
+  const video=$('previewVideo');
+  let idx=0;
   function next(){
     if(idx>=App.timeline.length){stopPreview();return;}
     const t=App.timeline[idx];
@@ -706,8 +732,10 @@ function playTimeline(){
     $('previewOverlay').style.display='none';video.style.display='block';
   };
   video.ontimeupdate=()=>{
-    const cur=video.currentTime-t.cutStart;const tot=App.timeline.reduce((s,x)=>s+x.cutDur,0);
+    const cur=Math.max(0,video.currentTime-t.cutStart);
+    const tot=App.timeline.reduce((s,x)=>s+x.cutDur,0);
     $('previewTime').textContent=formatTime(cur)+' / '+formatTime(tot);
+    if(video.currentTime>=t.cutEnd){idx++;next();}
   };
   next();
 }
@@ -717,9 +745,9 @@ function playClip(t){
   video.style.display='block';$('previewOverlay').style.display='none';
   $('previewTime').style.display='block';
   video.ontimeupdate=()=>{
+    if(video.currentTime>=t.cutEnd){video.pause();stopPreview();return;}
     const cur=video.currentTime-t.cutStart;
     $('previewTime').textContent=formatTime(cur)+' / '+formatTime(t.cutDur);
-    if(cur>=t.cutDur){video.pause();}
   };
 }
 function stopPreview(){
@@ -791,23 +819,11 @@ async function exportMP4(){
   }
 }
 async function exportGIF(){
-  // Use canvas-based GIF generation (simplified)
+  if(!App.timeline.length){toast('Nothing to export');return;}
+  $('progressWrap').classList.add('show');$('progressFill').style.width='0%';
   const c=document.createElement('canvas');const ctx=c.getContext('2d');
   c.width=480;c.height=270;
-  const frames=[];
-  $('progressWrap').classList.add('show');
-  for(let i=0;i<App.timeline.length;i++){
-    const t=App.timeline[i];
-    const v=document.createElement('video');v.src=t.url;v.muted=true;
-    await new Promise(r=>{v.onloadeddata=r;v.load();});
-    v.currentTime=t.cutStart;
-    await new Promise(r=>setTimeout(r,200));
-    ctx.drawImage(v,0,0,480,270);
-    frames.push(ctx.getImageData(0,0,480,270));
-    $('progressText').textContent=`Frame ${i+1}/${App.timeline.length}`;
-  }
-  // For real GIF we'd need a GIF encoder lib; for now export as WebM burst
-  const stream=c.captureStream();
+  const stream=c.captureStream(30);
   const rec=new MediaRecorder(stream,{mimeType:'video/webm'});
   const chunks=[];
   rec.ondataavailable=e=>chunks.push(e.data);
@@ -815,9 +831,23 @@ async function exportGIF(){
     const blob=new Blob(chunks,{type:'video/webm'});
     downloadBlob(blob,($('exportName').value||'cut_montage')+'.webm');
     $('progressWrap').classList.remove('show');
-    toast('Saved burst video (GIF requires encoder lib)','success');
+    toast('Saved burst video (GIF requires gif.js library)','success');
   };
-  rec.start();setTimeout(()=>rec.stop(),2000);
+  rec.start();
+  // Draw each clip frame onto canvas while recording
+  for(let i=0;i<App.timeline.length;i++){
+    const t=App.timeline[i];
+    const v=document.createElement('video');v.src=t.url;v.muted=true;
+    await new Promise(r=>{v.onloadeddata=()=>r();v.load();});
+    v.currentTime=t.cutStart;
+    await new Promise(r=>setTimeout(r,300));
+    ctx.fillStyle='#000';ctx.fillRect(0,0,480,270);
+    try{ctx.drawImage(v,0,0,480,270);}catch(e){}
+    $('progressText').textContent=`Frame ${i+1}/${App.timeline.length}`;
+    $('progressFill').style.width=Math.round(((i+1)/App.timeline.length)*100)+'%';
+    await new Promise(r=>setTimeout(r,500)); // hold frame for 0.5s
+  }
+  rec.stop();
 }
 function exportEDL(){
   let edl='TITLE: '+($('exportName').value||'cut_montage')+'\nFCM: NON-DROP FRAME\n\n';
@@ -889,7 +919,7 @@ function loadProject(key){
   $('targetCrf').value=p.config.crf||'23';
   $('audioMode').value=p.config.audio||'music';
   App.bpm=p.bpm||120;
-  toast('Loaded: '+p.name);
+  toast('Loaded: '+p.name+' — re-import video files to restore timeline');
   switchTab('montage');
 }
 
@@ -935,7 +965,7 @@ function deleteLayer(){
   App.studio.activeLayer=Math.max(0,App.studio.activeLayer-1);
   renderLayersList();composite();
 }
-function setStudioTool(t){App.studio.tool=t;document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}
+function setStudioTool(t,btn){App.studio.tool=t;document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');}
 function renderLayersList(){
   const list=$('layerList');list.innerHTML='';
   for(let i=0;i<App.studio.layers.length;i++){
@@ -1017,10 +1047,12 @@ $('timelineTrack').addEventListener('drop',e=>{
 /* ─── INIT ─── */
 window.addEventListener('DOMContentLoaded',()=>{
   toast('✂️ Unified Atelier loaded');
-  // Resume audio context on first interaction
-  document.body.addEventListener('click',()=>{
-    if(App.audioCtx&&App.audioCtx.state==='suspended')App.audioCtx.resume();
-  },{once:true});
+  // Resume audio context on any user gesture
+  const resumeAudio=()=>{if(App.audioCtx&&App.audioCtx.state==='suspended')App.audioCtx.resume();};
+  document.body.addEventListener('click',resumeAudio,{once:true});
+  document.body.addEventListener('dragenter',resumeAudio,{once:true});
+  document.body.addEventListener('drop',resumeAudio,{once:true});
+  document.body.addEventListener('keydown',resumeAudio,{once:true});
 });
 </script>
 </body>
