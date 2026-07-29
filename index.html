@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RAW CUT · Renaissance Atelier</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+/* ═══════════════════════════════════════════
+   RAW CUT · Renaissance Atelier — Unified
+   ═══════════════════════════════════════════ */
+:root {
+  --bg: #0d0b09;
+  --surface: #13100d;
+  --surface2: #1c1714;
+  --surface3: #261f1a;
+  --terracotta: #d96c4a;
+  --terracotta-glow: #f4a261;
+  --gold: #e9c46a;
+  --gold-dim: #d4a373;
+  --teal: #2a9d8f;
+  --teal-deep: #264653;
+  --text: #f5efe8;
+  --text-muted: #a89888;
+  --muted: #6a5f52;
+  --danger: #c0392b;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 12px 40px rgba(0,0,0,0.7);
+  --shadow-warm: 0 8px 32px rgba(217,108,74,0.08);
+  --glow-gold: 0 0 60px rgba(233,196,106,0.06);
+  --font-display: 'Cinzel', 'Georgia', serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; }
+body {
+  min-height: 100vh; overflow-x: hidden;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(244,162,97,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(42,157,143,0.04) 0%, transparent 50%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.004) 0px, rgba(255,255,255,0.004) 1px, transparent 1px, transparent 3px);
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #3a3228; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
+
+/* ─── HEADER ─── */
+header {
+  padding: 16px 32px; border-bottom: 1px solid #2a2018;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(13,11,9,0.92); backdrop-filter: blur(16px);
+  position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 12px;
+}
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--terracotta), var(--gold));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; box-shadow: 0 4px 16px rgba(217,108,74,0.25);
+  color: #1a1410;
+}
+header h1 {
+  font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--gold), var(--terracotta-glow), var(--terracotta));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;
+}
+header h1 small {
+  font-family: var(--font-body); font-size: 0.55rem; font-weight: 500;
+  -webkit-text-fill-color: var(--text-muted); background: none;
+  letter-spacing: 3px; text-transform: uppercase; display: block; margin-top: 2px;
+}
+.header-right { display: flex; align-items: center; gap: 14px; }
+.mode-toggle {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--surface2); border: 1px solid #2a2018;
+  border-radius: 24px; padding: 4px; cursor: pointer; user-select: none;
+  transition: border-color 0.3s;
+}
+.mode-toggle:hover { border-color: var(--gold-dim); }
+.mode-toggle span {
+  font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px;
+  padding: 5px 14px; border-radius: 20px; color: var(--text-muted); transition: all 0.3s;
+}
+.mode-toggle span.active {
+  background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+  color: #1a1410; font-weight: 700; box-shadow: 0 2px 12px rgba(233,196,106,0.2);
+}
+.badge {
+  font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--gold); border: 1px solid #3a3020; padding: 5px 14px;
+  border-radius: 20px; background: rgba(20,17,15,0.8); white-space: nowrap;
+  display: flex; align-items: center; gap: 6px; font-weight: 500;
+}
+.badge .dot {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); animation: pulse-dot 2.2s ease-in-out infinite;
+}
+@keyframes pulse-dot { 0%,100%{opacity:0.2;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }
+.container { max-width: 1440px; margin: 0 auto; padding: 20px 24px 80px; }
+
+/* ─── SECTIONS ─── */
+.section {
+  background: var(--surface); border: 1px solid #221c16; border-radius: var(--radius);
+  padding: 20px 24px 24px; margin-bottom: 20px; box-shadow: var(--shadow-warm);
+  transition: border-color 0.3s, box-shadow 0.3s; position: relative; overflow: hidden;
+}
+.section::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); opacity: 0.3;
+}
+.section:hover { border-color: #3a3020; box-shadow: var(--shadow-warm), var(--glow-gold); }
+.section-title {
+  font-family: var(--font-display); font-size: 0.75rem; text-transform: uppercase;
+  letter-spacing: 2.5px; color: var(--text-muted); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.section-title .count { color: var(--gold); font-weight: 600; font-family: var(--font-body); }
+.section-title .badge-sm {
+  font-size: 0.6rem; background: rgba(255,255,255,0.03); padding: 3px 12px;
+  border-radius: 12px; border: 1px solid #2a2018; color: var(--text-muted);
+  font-family: var(--font-body); letter-spacing: 1px;
+}
+
+/* ─── DROP ZONES ─── */
+.drop-zone {
+  border: 2px dashed #2a2018; border-radius: var(--radius); padding: 48px 24px;
+  text-align: center; transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+  cursor: pointer; background: linear-gradient(180deg, #12100e, #0c0a09);
+  position: relative; overflow: hidden;
+}
+.drop-zone::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 30%, rgba(244,162,97,0.04), transparent 70%);
+  pointer-events: none;
+}
+.drop-zone:hover, .drop-zone.dragover {
+  border-color: var(--terracotta); background: linear-gradient(180deg, #1a120e, #0c0a09);
+  transform: scale(1.005);
+}
+.drop-zone.music-zone:hover, .drop-zone.music-zone.dragover {
+  border-color: var(--teal); background: linear-gradient(180deg, #0e1a18, #0c0a09);
+}
+.drop-zone h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 400; margin-bottom: 6px; position: relative; z-index: 1; letter-spacing: 1px; }
+.drop-zone p { color: var(--text-muted); font-size: 0.8rem; position: relative; z-index: 1; }
+.drop-zone .icon { font-size: 2.8rem; display: block; margin-bottom: 8px; opacity: 0.5; position: relative; z-index: 1; }
+.drop-zone input[type="file"] { display: none; }
+
+/* ─── CLIP POOL ─── */
+.clip-pool { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 14px; }
+.clip-card {
+  background: var(--surface2); border: 1px solid #2a2018; border-radius: var(--radius-sm);
+  overflow: hidden; cursor: grab; transition: transform 0.25s, border-color 0.3s, box-shadow 0.3s;
+  position: relative; user-select: none;
+}
+.clip-card:hover {
+  border-color: var(--terracotta); transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.5), 0 0 20px rgba(217,108,74,0.08);
+}
+.clip-card.dragging { opacity: 0.35; transform: scale(0.94); }
+.clip-card .thumb {
+  width: 100%; aspect-ratio: 16/9; background: #000;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+}
+.clip-card .thumb img { width: 100%; height: 100%; object-fit: cover; }
+.proxy-strip {
+  display: none; position: absolute; bottom: 0; left: 0; right: 0; height: 100%;
+}
+.clip-card:hover .proxy-strip { display: flex; }
+.proxy-frame { flex: 1; height: 100%; opacity: 0; transition: opacity 0.1s; object-fit: cover; }
+.clip-card .info { padding: 8px 10px 6px; font-size: 0.72rem; }
+.clip-card .info .name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.78rem; color: var(--text); }
+.clip-card .info .meta { color: var(--text-muted); font-size: 0.68rem; margin-top: 2px; }
+.clip-card .dur-badge {
+  position: absolute; top: 6px; right: 6px; background: rgba(13,11,9,0.9);
+  padding: 2px 8px; border-radius: 4px; font-size: 0.62rem; font-weight: 700;
+  color: var(--gold); backdrop-filter: blur(4px); border: 1px solid rgba(233,196,106,0.15);
+}
+.clip-card .proxy-badge {
+  position: absolute; top: 6px; left: 6px; background: rgba(42,157,143,0.9);
+  color: #fff; padding: 1px 6px; border-radius: 3px; font-size: 0.55rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: none;
+}
+.clip-card.has-proxy .proxy-badge { display: block; }
+.clip-card .add-btn {
+  position: absolute; bottom: 6px; right: 6px; background: var(--terracotta);
+  color: #fff; border: none; border-radius: 4px; padding: 3px 10px;
+  font-size: 0.62rem; font-weight: 700; cursor: pointer; opacity: 0;
+  transition: opacity 0.2s, transform 0.15s; transform: scale(0.9); letter-spacing: 0.5px;
+}
+.clip-card:hover .add-btn { opacity: 1; transform: scale(1); }
+.clip-card .add-btn:hover { background: var(--terracotta-glow); transform: scale(1.05); }
+.energy-bar {
+  height: 3px; background: var(--surface3); border-radius: 0 0 4px 4px;
+  overflow: hidden; margin-top: 0;
+}
+.energy-bar .fill {
+  height: 100%; background: linear-gradient(90deg, var(--teal), var(--gold), var(--terracotta));
+  transition: width 0.5s;
+}
+
+/* ─── BUTTONS ─── */
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 4px; }
+button {
+  background: var(--surface2); color: var(--text); border: 1px solid #2a2018;
+  padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.72rem;
+  transition: all 0.25s; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+  font-family: var(--font-body); display: inline-flex; align-items: center; gap: 6px;
+}
+button:hover { border-color: var(--terracotta); color: var(--terracotta-glow); background: #1a120e; box-shadow: 0 4px 12px rgba(217,108,74,0.1); }
+button.primary {
+  background: linear-gradient(135deg, var(--terracotta), var(--terracotta-glow));
+  color: #fff; border-color: transparent; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+button.primary:hover { background: linear-gradient(135deg, var(--terracotta-glow), var(--terracotta)); color: #fff; box-shadow: 0 4px 20px rgba(217,108,74,0.3); transform: translateY(-1px); }
+button.accent2 { background: linear-gradient(135deg, var(--gold-dim), var(--gold)); color: #1a1410; border-color: transparent; font-weight: 700; }
+button.accent2:hover { background: linear-gradient(135deg, var(--gold), #f4d03f); box-shadow: 0 4px 20px rgba(233,196,106,0.25); }
+button.accent3 { background: linear-gradient(135deg, var(--teal-deep), var(--teal)); color: #fff; border-color: transparent; }
+button.accent3:hover { background: linear-gradient(135deg, var(--teal), #3dd9c5); box-shadow: 0 4px 20px rgba(42,157,143,0.2); }
+button.danger { border-color: var(--danger); color: #e74c3c; }
+button.danger:hover { background: var(--danger); color: #fff; }
+button:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+button.small { padding: 4px 10px; font-size: 0.62rem; letter-spacing: 0.5px; }
+button.ghost { background: transparent; border-color: transparent; color: var(--text-muted); }
+button.ghost:hover { border-color: var(--text-muted); color: var(--text); }
+
+/* ─── TIMELINE ─── */
+.timeline-wrap {
+  background: linear-gradient(180deg, #0e0c0a, #0c0a09); border-radius: var(--radius-sm);
+  padding: 12px 14px; overflow-x: auto; min-height: 120px; border: 1px solid #1c1612;
+  transition: border-color 0.3s;
+}
+.timeline-wrap:hover { border-color: #2a2018; }
+.timeline-track { display: flex; gap: 8px; min-width: max-content; align-items: stretch; padding: 6px 0; }
+.timeline-clip {
+  background: linear-gradient(180deg, #1c1714, #12100e); border: 2px solid #2a2018;
+  border-radius: var(--radius-sm); height: 96px; min-width: 130px; max-width: 220px;
+  position: relative; cursor: grab; overflow: hidden; display: flex; flex-direction: column;
+  transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s; flex-shrink: 0;
+}
+.timeline-clip:hover { border-color: var(--terracotta); transform: scale(1.03); z-index: 2; box-shadow: 0 4px 24px rgba(217,108,74,0.12); }
+.timeline-clip.active { border-color: var(--gold); box-shadow: 0 0 30px rgba(233,196,106,0.15); }
+.timeline-clip .t-thumb { height: 52px; background: #000; overflow: hidden; flex-shrink: 0; position: relative; }
+.timeline-clip .t-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.timeline-clip .t-info { padding: 4px 10px; font-size: 0.65rem; display: flex; justify-content: space-between; align-items: center; flex: 1; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); }
+.timeline-clip .t-dur { color: var(--gold); font-weight: 700; font-size: 0.7rem; }
+.timeline-clip .t-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70px; color: #b0a898; }
+.timeline-clip .t-remove { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; background: var(--danger); color: #fff; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; display: none; align-items: center; justify-content: center; padding: 0; font-weight: 700; transition: transform 0.15s; }
+.timeline-clip .t-remove:hover { transform: scale(1.15); }
+.timeline-clip:hover .t-remove { display: flex; }
+.timeline-placeholder { min-width: 140px; height: 96px; border: 2px dashed #2a2018; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.75rem; padding: 0 16px; text-align: center; flex-shrink: 0; font-family: var(--font-display); letter-spacing: 1px; }
+
+/* ─── MUSIC ─── */
+.music-layer { background: linear-gradient(180deg, #0e0c0a, #0c0a09); border-radius: var(--radius-sm); padding: 12px 16px; border: 1px solid #1c1612; margin-top: 10px; }
+.music-layer-title { font-family: var(--font-display); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--teal); margin-bottom: 8px; }
+.waveform-wrap { position: relative; height: 60px; background: #0a0a0a; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid #1c1612; }
+#waveformCanvas { width: 100%; height: 100%; display: block; }
+.music-controls { display: flex; align-items: center; gap: 14px; margin-top: 10px; flex-wrap: wrap; }
+.music-controls label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
+.music-controls input[type="range"] { -webkit-appearance: none; width: 100px; height: 4px; background: #2a2018; border-radius: 2px; outline: none; }
+.music-controls input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--teal); border-radius: 50%; cursor: pointer; transition: transform 0.15s; box-shadow: 0 0 8px rgba(42,157,143,0.3); }
+.music-controls input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+.music-info { display: flex; gap: 18px; font-size: 0.75rem; color: #8a7f72; margin-top: 8px; flex-wrap: wrap; }
+.music-info span { color: var(--teal); font-weight: 600; }
+.music-info .label { color: var(--text-muted); font-weight: 400; }
+
+/* ─── PREVIEW ─── */
+.preview-box { background: #000; border-radius: var(--radius-sm); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border: 1px solid #1c1612; max-height: 70vh; }
+.preview-box video { width: 100%; height: 100%; object-fit: contain; }
+.preview-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 20px; background: linear-gradient(transparent, rgba(13,11,9,0.95)); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; pointer-events: none; }
+.preview-overlay .status { color: var(--text-muted); }
+.preview-overlay .time { font-family: var(--font-mono); color: var(--gold); font-size: 0.85rem; }
+
+/* ─── PROMPT ─── */
+.prompt-box { display: flex; gap: 12px; margin-bottom: 14px; }
+.prompt-box textarea { flex: 1; background: #0e0c0a; border: 1px solid #2a2018; border-radius: var(--radius-sm); padding: 14px 16px; color: var(--text); font-size: 0.9rem; resize: vertical; min-height: 70px; font-family: var(--font-body); line-height: 1.5; transition: border-color 0.25s, box-shadow 0.25s; }
+.prompt-box textarea:focus { outline: none; border-color: var(--gold-dim); box-shadow: 0 0 20px rgba(212,163,115,0.08); }
+.prompt-box textarea::placeholder { color: #4a4238; }
+.config-output {
+  background: #0e0c0a; border: 1px solid #1c1612; border-radius: var(--radius-sm); padding: 16px 18px;
+  font-family: var(--font-mono); font-size: 0.72rem; color: var(--gold); white-space: pre-wrap;
+  display: none; margin-top: 12px; line-height: 1.7; max-height: 320px; overflow-y: auto;
+  border-left: 3px solid var(--gold-dim);
+}
+.config-output.show { display: block; }
+
+/* ─── SETTINGS ─── */
+.settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 12px 0 8px; }
+.setting label { display: block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500; }
+.setting select, .setting input[type="text"], .setting input[type="number"] { width: 100%; background: #0e0c0a; border: 1px solid #2a2018; border-radius: var(--radius-sm); padding: 8px 12px; color: var(--text); font-size: 0.78rem; font-family: var(--font-body); transition: border-color 0.2s; }
+.setting select:focus, .setting input:focus { outline: none; border-color: var(--gold-dim); }
+.setting input[type="range"] { width: 100%; margin-top: 6px; -webkit-appearance: none; height: 4px; background: #2a2018; border-radius: 2px; outline: none; }
+.setting input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--terracotta); border-radius: 50%; cursor: pointer; box-shadow: 0 0 8px rgba(217,108,74,0.2); }
+
+/* ─── PROGRESS ─── */
+.progress-wrap { display: none; margin-top: 16px; background: #0e0c0a; border: 1px solid #1c1612; border-radius: var(--radius-sm); padding: 16px 18px; }
+.progress-wrap.show { display: block; }
+.progress-bar { height: 8px; background: #1c1612; border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--terracotta), var(--terracotta-glow), var(--gold)); width: 0%; transition: width 0.4s cubic-bezier(0.22,1,0.36,1); border-radius: 4px; }
+.progress-text { font-size: 0.82rem; color: var(--text-muted); margin-top: 10px; font-family: var(--font-mono); }
+.progress-eta { font-size: 0.75rem; color: #6a5f52; margin-top: 4px; }
+.progress-log { font-size: 0.68rem; color: #5c5348; margin-top: 10px; font-family: var(--font-mono); max-height: 80px; overflow-y: auto; background: #080605; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid #14100c; line-height: 1.6; }
+.progress-log .hl { color: var(--gold); }
+.progress-log .err { color: #e74c3c; }
+
+/* ─── DOWNLOAD ─── */
+#downloadArea { margin-top: 16px; display: none; }
+#downloadArea.show { display: block; }
+.download-card { background: linear-gradient(135deg, #0c1a0c, #0e0c0a); border: 1px solid #1e3a1e; border-radius: var(--radius-sm); padding: 24px 28px; text-align: center; animation: slideUp 0.5s cubic-bezier(0.22,1,0.36,1); position: relative; overflow: hidden; }
+.download-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.download-card .big { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; color: var(--gold); letter-spacing: 1px; }
+.download-card a { display: inline-block; background: linear-gradient(135deg, var(--gold-dim), var(--gold)); color: #1a1410; padding: 14px 40px; border-radius: var(--radius-sm); text-decoration: none; font-weight: 700; font-size: 0.95rem; transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 0.5px; }
+.download-card a:hover { background: linear-gradient(135deg, var(--gold), #f4d03f); transform: scale(1.03); box-shadow: 0 8px 24px rgba(233,196,106,0.25); }
+.download-card .size { margin-top: 10px; font-size: 0.75rem; color: #6a5f52; }
+
+/* ─── GUIDE ─── */
+.guide-toggle { cursor: pointer; user-select: none; }
+.guide-toggle:hover { color: var(--text); }
+.guide-content { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid #1c1612; }
+.guide-content.active { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+.guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 12px; }
+.guide-card { background: #0e0c0a; border: 1px solid #1c1612; border-radius: var(--radius-sm); padding: 14px 16px; transition: border-color 0.2s; }
+.guide-card:hover { border-color: #3a3020; }
+.guide-card h4 { color: var(--terracotta); font-family: var(--font-display); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.guide-card p, .guide-card li { font-size: 0.78rem; color: #a09888; line-height: 1.6; }
+.guide-card ul { margin-left: 18px; margin-top: 4px; list-style-type: disc; }
+.guide-card code { background: #14100c; padding: 2px 8px; border-radius: 4px; color: var(--gold); font-size: 0.68rem; font-family: var(--font-mono); border: 1px solid #2a2018; }
+.guide-intro { font-size: 0.85rem; color: #a09888; margin-bottom: 8px; line-height: 1.5; }
+
+/* ─── TOAST ─── */
+.toast { position: fixed; bottom: 28px; right: 28px; background: var(--surface2); border: 1px solid var(--terracotta); color: var(--text); padding: 14px 24px; border-radius: var(--radius-sm); font-size: 0.85rem; z-index: 999; transform: translateY(80px); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s; box-shadow: var(--shadow); max-width: 440px; backdrop-filter: blur(12px); background: rgba(20,17,15,0.96); pointer-events: none; font-family: var(--font-body); }
+.toast.show { transform: translateY(0); pointer-events: auto; }
+.toast.success { border-color: var(--gold); }
+.toast.error { border-color: var(--danger); }
+
+/* ─── WARNING ─── */
+.warning-box { background: linear-gradient(135deg, #1a1000, #0e0c0a); border: 1px solid #3a2800; border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.78rem; color: #d4a373; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+.warning-box .icon { font-size: 1.3rem; }
+
+/* ─── PRESET CHIPS ─── */
+.preset-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.preset-chip { background: #0e0c0a; border: 1px solid #2a2018; border-radius: 20px; padding: 4px 14px; font-size: 0.65rem; cursor: pointer; transition: all 0.2s; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 500; }
+.preset-chip:hover { border-color: var(--terracotta); color: var(--text); background: #1a120e; box-shadow: 0 2px 8px rgba(217,108,74,0.1); }
+.preset-chip.active { border-color: var(--gold); color: var(--gold); background: rgba(233,196,106,0.05); }
+
+/* ─── SMART MODE HIDES ─── */
+body.smart-mode .pro-only { display: none !important; }
+body.smart-mode .section { padding: 16px 20px; }
+body.smart-mode .settings-grid { display: none; }
+body.smart-mode .preset-chips { display: none; }
+body.smart-mode .warning-box { display: none; }
+body.smart-mode .guide-toggle { display: none; }
+body.smart-mode .music-controls button:not(.danger) { display: none; }
+body.smart-mode .music-controls label:nth-of-type(3), body.smart-mode .music-controls label:nth-of-type(4) { display: none; }
+body.smart-mode .music-controls input#musicOffset, body.smart-mode .music-controls #offsetVal, body.smart-mode .music-controls input#musicLoop { display: none; }
+.smart-render-btn { display: none; width: 100%; padding: 18px; font-size: 1.1rem; margin-top: 10px; font-family: var(--font-display); letter-spacing: 2px; }
+body.smart-mode .smart-render-btn { display: inline-flex; justify-content: center; }
+body.smart-mode #exportBtn { display: none; }
+body.smart-mode .btn-row:not(.always-show) { display: none; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  header { padding: 12px 16px; } header h1 { font-size: 1.1rem; }
+  .container { padding: 12px 14px 60px; } .section { padding: 14px 16px 18px; }
+  .clip-pool { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .prompt-box { flex-direction: column; } .settings-grid { grid-template-columns: 1fr 1fr; }
+  .music-controls { gap: 10px; } .music-controls input[type="range"] { width: 70px; }
+  .timeline-clip { min-width: 110px; height: 84px; } .timeline-clip .t-thumb { height: 42px; }
+  .preview-box { max-height: 50vh; } .brand-icon { width: 32px; height: 32px; font-size: 1rem; }
+}
+@media (max-width: 480px) {
+  .settings-grid { grid-template-columns: 1fr; } .btn-row button { font-size: 0.6rem; padding: 5px 10px; }
+  .badge { font-size: 0.5rem; padding: 3px 10px; } .drop-zone { padding: 32px 16px; }
+  .drop-zone .icon { font-size: 2rem; } .guide-grid { grid-template-columns: 1fr; }
+  .mode-toggle span { padding: 4px 8px; font-size: 0.55rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-icon">✂️</div>
+    <h1>RAW CUT <small>renaissance atelier</small></h1>
+  </div>
+  <div class="header-right">
+    <div class="mode-toggle" id="modeToggle" onclick="toggleMode()">
+      <span class="active" data-mode="smart">⚡ Smart</span>
+      <span data-mode="pro">🎛 Pro</span>
+    </div>
+    <span class="badge"><span class="dot"></span>🜲 No watermark · No limits · Local only</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ─── IMPORT CLIPS ─── -->
+  <section class="section" id="dropSection">
+    <div class="section-title">📁 Import Clips</div>
+    <div class="drop-zone" id="dropZone">
+      <span class="icon">🎬</span>
+      <h2>Drop your clips here</h2>
+      <p>MP4, MOV, WEBM, MKV · All processing stays in your browser — no cloud, no accounts</p>
+      <input type="file" id="fileInput" multiple accept="video/*" />
+    </div>
+  </section>
+
+  <!-- ─── MUSIC (PRO-ONLY) ─── -->
+  <section class="section pro-only" id="musicSection" style="display:none">
+    <div class="section-title">🎵 Music Track <span id="musicStatus" style="color:var(--text-muted)"></span></div>
+    <div class="drop-zone music-zone" id="musicDropZone" style="padding:32px 20px;">
+      <span class="icon">🎧</span>
+      <h2>Drop your music track here</h2>
+      <p>MP3, WAV, AAC, OGG · Auto-detects BPM, beats & drops</p>
+      <input type="file" id="musicInput" accept="audio/*" />
+    </div>
+    <div id="musicAnalysis" style="display:none;">
+      <div class="music-info">
+        <span>🎵 <span id="musicName">-</span></span>
+        <span>⏱ <span id="musicDuration">-</span></span>
+        <span>🥁 BPM: <span id="musicBpm">-</span></span>
+        <span>⚡ Drops: <span id="musicDrops">-</span></span>
+        <span class="proxy-indicator" style="display:inline-flex;align-items:center;gap:4px;font-size:0.6rem;color:var(--teal);background:rgba(42,157,143,0.08);padding:2px 8px;border-radius:4px;border:1px solid rgba(42,157,143,0.15);">✓ Proxy Ready</span>
+      </div>
+      <div class="music-layer">
+        <div class="music-layer-title">🌊 Waveform & Beat Grid</div>
+        <div class="waveform-wrap"><canvas id="waveformCanvas"></canvas></div>
+      </div>
+      <div class="music-controls">
+        <label>Vol</label><input type="range" id="musicVolume" min="0" max="100" value="70" />
+        <label>Offset</label><input type="range" id="musicOffset" min="0" max="60" value="0" step="0.5" />
+        <span id="offsetVal" style="font-size:0.75rem;color:#8a7f72;min-width:36px;">0s</span>
+        <label><input type="checkbox" id="musicLoop" checked style="margin-right:4px;" />Loop</label>
+        <button class="accent3 small" onclick="analyzeMusicVibe()">🔬 Vibe Match</button>
+        <button class="accent3 small" onclick="syncToBeat()">🔗 Snap to Beat</button>
+        <button class="danger small" onclick="clearMusic()">✕ Remove</button>
+      </div>
+      <div id="vibeMatchResult" style="margin-top:12px;font-size:0.78rem;color:var(--teal);display:none;white-space:pre-wrap;font-family:var(--font-mono);line-height:1.6;background:#0e0c0a;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid #1c1612;"></div>
+    </div>
+  </section>
+
+  <!-- ─── CLIP POOL ─── -->
+  <section class="section" id="poolSection" style="display:none">
+    <div class="section-title">
+      🎞 Clip Pool <span class="count" id="clipCount">(0)</span>
+      <span style="flex:1"></span>
+      <button class="small" onclick="sortClips('duration')">Short</button>
+      <button class="small" onclick="sortClips('durationDesc')">Long</button>
+      <button class="small" onclick="sortClips('resolution')">Res</button>
+      <button class="small" onclick="sortClips('random')">Random</button>
+      <button class="small" onclick="sortClips('energy')">⚡Energy</button>
+      <button class="small danger" onclick="clearAll()">✕ Clear</button>
+    </div>
+    <div class="clip-pool" id="clipPool"></div>
+  </section>
+
+  <!-- ─── TIMELINE ─── -->
+  <section class="section" id="timelineSection" style="display:none">
+    <div class="section-title">
+      🎚 Timeline <span class="count" id="timelineCount">(0)</span>
+      <span style="flex:1"></span>
+      <button class="small" onclick="shuffleTimeline()">🔀 Shuffle</button>
+      <button class="small danger" onclick="clearTimeline()">Clear</button>
+    </div>
+    <div class="timeline-wrap">
+      <div class="timeline-track" id="timelineTrack">
+        <div class="timeline-placeholder">Drop clips here to build your montage</div>
+      </div>
+    </div>
+    <div class="btn-row always-show" style="margin-top:12px">
+      <button onclick="playTimeline()">▶ Play Preview</button>
+      <button onclick="stopPreview()">⏹ Stop</button>
+      <button onclick="exportTimeline()" class="primary">🔥 Render Montage</button>
+    </div>
+    <button class="primary smart-render-btn" onclick="smartRender()">⚡ AUTO VIBE & RENDER</button>
+  </section>
+
+  <!-- ─── PREVIEW ─── -->
+  <section class="section" id="previewSection" style="display:none">
+    <div class="section-title">👁 Preview</div>
+    <div class="preview-box">
+      <video id="previewVideo" playsinline></video>
+      <div class="preview-overlay">
+        <span class="status" id="previewStatus">Ready</span>
+        <span class="time" id="previewTime">00:00 / 00:00</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── VIBE PROMPT ─── -->
+  <section class="section">
+    <div class="section-title">🧠 Vibe Prompt Engine</div>
+    <div class="prompt-box">
+      <textarea id="vibePrompt" placeholder='Describe your vibe: "psychonaut cliff jump stoner metal skater hype, fast cuts, vertical reel"…'></textarea>
+      <button class="primary" onclick="generateConfig()" style="align-self:flex-start;padding:14px 22px;">Generate Config</button>
+    </div>
+    <div class="config-output" id="configOutput"></div>
+    <div class="btn-row" id="configActions" style="display:none">
+      <button onclick="applyConfig()" class="accent2">✅ Apply to Timeline</button>
+      <button onclick="regenerateConfig()">🎲 Re-roll</button>
+      <button onclick="clearConfig()" class="ghost small">✕ Clear</button>
+    </div>
+  </section>
+
+  <!-- ─── EXPORT (PRO-ONLY) ─── -->
+  <section class="section pro-only" id="exportSection" style="display:none">
+    <div class="section-title">⚙ Export Settings <span class="badge-sm" style="margin-left:auto;">presets</span></div>
+    <div class="preset-chips">
+      <span class="preset-chip" data-res="1080x1920" data-fps="30" data-crf="23">📱 Vertical</span>
+      <span class="preset-chip" data-res="1080x1920" data-fps="60" data-crf="23">📱 60fps</span>
+      <span class="preset-chip" data-res="1920x1080" data-fps="30" data-crf="23">🎬 Widescreen</span>
+      <span class="preset-chip" data-res="1920x1080" data-fps="24" data-crf="23">🎞 Cinematic</span>
+      <span class="preset-chip" data-res="1080x1350" data-fps="30" data-crf="23">📸 4:5</span>
+      <span class="preset-chip" data-res="3840x2160" data-fps="30" data-crf="28">4K (slow)</span>
+      <span class="preset-chip" data-res="720x1280" data-fps="30" data-crf="28">⚡ Fast</span>
+    </div>
+    <div class="warning-box" id="renderWarning">
+      <span class="icon">⚠️</span>
+      <span><strong>Heads up:</strong> Browser rendering is CPU-intensive. 12 clips @ 1080×1920 60fps can take 20–40 min. <strong>CRF 28 + 30fps</strong> is much faster. Tab may appear frozen — it's working.</span>
+    </div>
+    <div class="settings-grid">
+      <div class="setting"><label>Resolution</label><select id="targetRes"><option value="1920x1080">1920×1080 (FHD)</option><option value="1280x720">1280×720 (HD)</option><option value="3840x2160">3840×2160 (4K)</option><option value="1080x1920" selected>1080×1920 (Vertical)</option><option value="1080x1350">1080×1350 (4:5)</option><option value="720x1280">720×1280 (Vertical HD)</option></select></div>
+      <div class="setting"><label>Frame Rate</label><select id="targetFps"><option value="60">60 fps (Silky)</option><option value="30" selected>30 fps (Standard)</option><option value="24">24 fps (Cinematic)</option></select></div>
+      <div class="setting"><label>Quality (CRF)</label><select id="targetCrf"><option value="18">18 — Near Lossless (SLOW)</option><option value="23" selected>23 — Balanced</option><option value="28">28 — Smaller File (FAST)</option><option value="35">35 — Max Compression</option></select></div>
+      <div class="setting"><label>Audio Mode</label><select id="audioMode"><option value="keep">Keep Original Audio</option><option value="mute">Mute All</option><option value="music">Replace with Music Track</option><option value="mix" selected>Mix Original + Music</option></select></div>
+      <div class="setting"><label>Music Volume</label><input type="range" id="exportMusicVol" min="0" max="100" value="70" /></div>
+      <div class="setting"><label>Original Audio Volume</label><input type="range" id="exportOrigVol" min="0" max="100" value="30" /></div>
+    </div>
+    <button class="primary" id="exportBtn" onclick="startExport()" style="width:100%;padding:16px;font-size:1rem;margin-top:8px;font-family:var(--font-display);letter-spacing:2px;">⚡ RENDER MONTAGE</button>
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">Waiting…</div>
+      <div class="progress-eta" id="progressEta"></div>
+      <div class="progress-log" id="progressLog"></div>
+      <div class="btn-row" style="margin-top:12px"><button class="danger" onclick="cancelExport()">⏹ CANCEL RENDER</button></div>
+    </div>
+    <div id="downloadArea"></div>
+  </section>
+
+  <!-- ─── GUIDE (PRO-ONLY) ─── -->
+  <section class="section pro-only">
+    <div class="section-title guide-toggle" onclick="toggleGuide()">📖 Prompt Writing Guide <span style="color:var(--text-muted);margin-left:auto;font-size:0.7rem;font-weight:400;">[click to toggle]</span></div>
+    <div class="guide-content" id="guideContent">
+      <p class="guide-intro">The Vibe Prompt Engine translates your words into montage rules — all in your browser.</p>
+      <div class="guide-grid">
+        <div class="guide-card"><h4>⚡ Energy & Pace</h4><ul><li><code>hype</code> <code>fast</code> <code>chaos</code> → short clips, 60fps, hard cuts</li><li><code>calm</code> <code>mellow</code> <code>slow</code> → longer clips, 24fps, smooth</li><li><code>random</code> <code>mixed</code> → random order, variable pacing</li></ul></div>
+        <div class="guide-card"><h4>🎨 Aesthetic Keywords</h4><ul><li><code>vibrant</code> <code>colorful</code> → saturated, high contrast</li><li><code>warm</code> <code>golden</code> → warm tones, soft grain</li><li><code>dark</code> <code>gritty</code> → crushed blacks, aggressive</li></ul></div>
+        <div class="guide-card"><h4>🎵 Music Context</h4><ul><li><code>120bpm</code> → cut lengths match tempo</li><li><code>electronic</code> <code>upbeat</code> → fast cuts on drops</li><li>Upload a track — auto-detects BPM, beats, and drops</li></ul></div>
+        <div class="guide-card"><h4>🖼 Format Hints</h4><ul><li><code>vertical</code> <code>reel</code> <code>shorts</code> → 9:16 output</li><li><code>youtube</code> <code>widescreen</code> → 16:9 output</li></ul></div>
+        <div class="guide-card"><h4>🎲 Randomization</h4><ul><li><code>random</code> <code>surprise</code> → triggers full random config</li><li>Click <strong>Re-roll</strong> for a fresh take on the same prompt</li></ul></div>
+        <div class="guide-card"><h4>🔥 Example Prompts</h4><ul><li><code>"psychonaut cliff jump stoner metal skater hype fast cuts vertical reel"</code></li><li><code>"calm nature documentary style with slow cinematic pacing"</code></li><li><code>"family road trip memories with mixed random clips and happy vibes"</code></li></ul></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+<script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+
+<script>
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  STATE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const state = {
+  clips: [], timeline: [], currentConfig: null,
+  isPlaying: false, previewIndex: 0,
+  ffmpeg: null, ffmpegLoaded: false, ffmpegLoading: false,
+  music: null, musicAudio: null, musicBuffer: null,
+  musicBpm: 0, musicBeats: [], musicDrops: [], musicEnergy: [],
+  cancelRender: false, renderStartTime: 0, renderStep: 0,
+  smartMode: true, proxyFrames: new Map(),
+};
+const $ = (id) => document.getElementById(id);
+const $$ = (sel) => document.querySelectorAll(sel);
+
+function toast(msg, type = '') {
+  const t = $('toast'); t.textContent = msg;
+  t.className = 'toast' + (type ? ' ' + type : '');
+  t.classList.add('show'); clearTimeout(t._hide);
+  t._hide = setTimeout(() => t.classList.remove('show'), 4000);
+}
+function logProgress(msg, highlight = false) {
+  const el = $('progressLog');
+  const line = (highlight ? '▸ ' : '  ') + msg;
+  el.textContent = line + '\n' + el.textContent;
+  if (el.textContent.length > 1200) el.textContent = el.textContent.slice(0, 1200);
+}
+function formatTime(s) {
+  if (!isFinite(s) || s < 0) return '0:00';
+  const m = Math.floor(s / 60); const sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+function formatSize(b) {
+  if (b > 1e9) return (b / 1e9).toFixed(2) + ' GB';
+  if (b > 1e6) return (b / 1e6).toFixed(1) + ' MB';
+  return (b / 1e3).toFixed(0) + ' KB';
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  SMART / PRO MODE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function toggleMode() {
+  const toggle = $('modeToggle'); const spans = toggle.querySelectorAll('span');
+  state.smartMode = !state.smartMode;
+  spans.forEach(s => s.classList.remove('active'));
+  if (state.smartMode) { spans[0].classList.add('active'); document.body.classList.add('smart-mode'); toast('⚡ Smart Mode: essentials only'); }
+  else { spans[1].classList.add('active'); document.body.classList.remove('smart-mode'); toast('🎛 Pro Mode: all controls unlocked'); }
+}
+document.body.classList.add('smart-mode');
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  PROXY FRAMES + MOTION ENERGY
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function analyzeClip(video, clipId) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 160; canvas.height = 90;
+  const duration = video.duration || 1;
+  const proxyCount = 5;
+  const proxyFrames = [];
+  let prevData = null, totalDiff = 0, count = 0;
+
+  for (let i = 0; i < proxyCount; i++) {
+    const t = (duration * i) / (proxyCount - 1);
+    video.currentTime = t;
+    await new Promise(resolve => {
+      video.onseeked = () => {
+        try {
+          ctx.drawImage(video, 0, 0, 160, 90);
+          proxyFrames.push(canvas.toDataURL('image/jpeg', 0.5));
+          const data = ctx.getImageData(0, 0, 160, 90).data;
+          if (prevData) {
+            let diff = 0;
+            for (let j = 0; j < data.length; j += 4) {
+              diff += Math.abs(data[j] - prevData[j]) + Math.abs(data[j+1] - prevData[j+1]) + Math.abs(data[j+2] - prevData[j+2]);
+            }
+            diff /= data.length / 4; totalDiff += diff; count++;
+          }
+          prevData = data;
+        } catch (_) { proxyFrames.push(''); }
+        resolve();
+      };
+      setTimeout(resolve, 600);
+    });
+  }
+  const avgEnergy = count > 0 ? Math.min(10, Math.max(1, totalDiff / count / 8)) : 5;
+  state.proxyFrames.set(clipId, proxyFrames);
+  return { proxyFrames, energy: Math.round(avgEnergy) };
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  VIDEO DROP
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const dropZone = $('dropZone');
+const fileInput = $('fileInput');
+dropZone.addEventListener('click', () => fileInput.click());
+dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+async function handleFiles(files) {
+  const videos = Array.from(files).filter(f => f.type.startsWith('video/'));
+  if (!videos.length) { toast('No video files found', 'error'); return; }
+  toast(`Loading ${videos.length} clip(s)...`);
+  for (const file of videos) await addClip(file);
+  updateUI();
+  toast(`✅ ${videos.length} clips loaded with proxy frames & motion energy`, 'success');
+}
+
+async function addClip(file) {
+  const url = URL.createObjectURL(file);
+  const video = document.createElement('video');
+  video.src = url; video.muted = true; video.preload = 'metadata';
+  await new Promise((resolve, reject) => { video.onloadedmetadata = resolve; video.onerror = reject; setTimeout(resolve, 5000); });
+  const duration = video.duration || 1;
+  const width = video.videoWidth || 0; const height = video.videoHeight || 0;
+  const aspect = width && height ? (width / height).toFixed(2) : '?';
+  const fps = await estimateFPS(video);
+  const thumb = await captureThumb(video);
+  const clipId = 'c_' + Math.random().toString(36).slice(2, 8);
+  const { proxyFrames, energy } = await analyzeClip(video, clipId);
+  const clip = { id: clipId, file, url, name: file.name, size: file.size, duration, width, height, aspect, fps, thumb, proxyFrames, energy, inPoint: 0, outPoint: duration };
+  state.clips.push(clip);
+  if (state.timeline.length === 0 && state.clips.length === 1) {
+    state.timeline.push({ ...clip, timelineId: 't_' + Math.random().toString(36).slice(2, 8) });
+  }
+}
+
+async function estimateFPS(video) {
+  return new Promise((resolve) => {
+    if (video.requestVideoFrameCallback) {
+      let frames = 0, start = 0;
+      const cb = (now) => {
+        if (!start) start = now; frames++;
+        if (now - start < 500) video.requestVideoFrameCallback(cb);
+        else { video.pause(); resolve(Math.round((frames * 1000) / (now - start)) || 30); }
+      };
+      video.currentTime = 0; video.play().catch(()=>{});
+      video.requestVideoFrameCallback(cb);
+      setTimeout(() => { video.pause(); resolve(30); }, 1200);
+    } else resolve(30);
+  });
+}
+
+async function captureThumb(video) {
+  return new Promise((resolve) => {
+    const canvas = document.createElement('canvas'); canvas.width = 320; canvas.height = 180;
+    const ctx = canvas.getContext('2d');
+    const t = Math.min(video.duration * 0.25, 1.5);
+    video.currentTime = t;
+    video.onseeked = () => {
+      try { ctx.drawImage(video, 0, 0, canvas.width, canvas.height); resolve(canvas.toDataURL('image/jpeg', 0.7)); }
+      catch (_) { resolve(''); }
+    };
+    setTimeout(() => resolve(''), 3000);
+  });
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  MUSIC DROP & ANALYSIS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const musicDropZone = $('musicDropZone');
+const musicInput = $('musicInput');
+musicDropZone.addEventListener('click', () => musicInput.click());
+musicDropZone.addEventListener('dragover', (e) => { e.preventDefault(); musicDropZone.classList.add('dragover'); });
+musicDropZone.addEventListener('dragleave', () => musicDropZone.classList.remove('dragover'));
+musicDropZone.addEventListener('drop', (e) => { e.preventDefault(); musicDropZone.classList.remove('dragover'); if (e.dataTransfer.files.length) handleMusicFile(e.dataTransfer.files[0]); });
+musicInput.addEventListener('change', (e) => { if (e.target.files.length) handleMusicFile(e.target.files[0]); });
+
+async function handleMusicFile(file) {
+  toast('🎵 Analyzing music track...');
+  const url = URL.createObjectURL(file);
+  state.music = { file, url, name: file.name };
+  if (state.musicAudio) { state.musicAudio.pause(); state.musicAudio = null; }
+  state.musicAudio = new Audio(url); state.musicAudio.volume = $('musicVolume').value / 100;
+  const arrayBuffer = await file.arrayBuffer();
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  try {
+    state.musicBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+    analyzeMusic(audioCtx);
+    $('musicDropZone').style.display = 'none';
+    $('musicAnalysis').style.display = 'block';
+    $('musicName').textContent = file.name;
+    $('musicDuration').textContent = formatTime(state.musicBuffer.duration);
+    toast('🎵 Music loaded & analyzed', 'success');
+  } catch (err) { toast('❌ Could not decode audio: ' + err.message, 'error'); }
+}
+
+function analyzeMusic(audioCtx) {
+  const buffer = state.musicBuffer; const sampleRate = buffer.sampleRate;
+  const data = buffer.getChannelData(0); const duration = buffer.duration;
+  const windowSize = Math.floor(sampleRate * 0.05); const hopSize = Math.floor(sampleRate * 0.025);
+  const energy = [];
+  for (let i = 0; i < data.length - windowSize; i += hopSize) {
+    let sum = 0; for (let j = 0; j < windowSize; j++) sum += data[i+j] * data[i+j];
+    energy.push(Math.sqrt(sum / windowSize));
+  }
+  state.musicEnergy = energy;
+  const onsets = [];
+  for (let i = 1; i < energy.length; i++) {
+    const diff = energy[i] - energy[i-1];
+    if (diff > 0.015) onsets.push({ idx: i, time: (i * hopSize) / sampleRate, strength: diff });
+  }
+  const intervals = [];
+  for (let i = 1; i < onsets.length; i++) {
+    const gap = onsets[i].time - onsets[i-1].time;
+    if (gap > 0.2 && gap < 2.0) intervals.push(gap);
+  }
+  let bpm = 120;
+  if (intervals.length > 5) {
+    const hist = {};
+    intervals.forEach(gap => { const b = Math.round(60 / gap); if (b >= 60 && b <= 200) hist[b] = (hist[b] || 0) + 1; });
+    let maxCount = 0, bestBpm = 120;
+    Object.entries(hist).forEach(([b, c]) => { if (c > maxCount) { maxCount = c; bestBpm = parseInt(b); } });
+    bpm = bestBpm;
+  }
+  state.musicBpm = bpm; $('musicBpm').textContent = bpm;
+  const beatInterval = 60 / bpm; const beats = [];
+  for (let t = 0; t < duration; t += beatInterval) beats.push(t);
+  state.musicBeats = beats;
+  const drops = []; const energyWindows = []; const winLen = Math.floor(energy.length / 100);
+  for (let i = 0; i < 100; i++) { let s = 0; for (let j = i * winLen; j < (i+1) * winLen && j < energy.length; j++) s += energy[j]; energyWindows.push(s / winLen); }
+  for (let i = 3; i < energyWindows.length - 3; i++) {
+    const prevAvg = (energyWindows[i-3] + energyWindows[i-2] + energyWindows[i-1]) / 3;
+    const nextAvg = (energyWindows[i] + energyWindows[i+1] + energyWindows[i+2]) / 3;
+    if (prevAvg < 0.05 && nextAvg > prevAvg * 4 && nextAvg > 0.08) drops.push({ time: (i / 100) * duration, intensity: nextAvg });
+  }
+  state.musicDrops = drops; $('musicDrops').textContent = drops.length;
+  drawWaveform(data, energy, beats, drops, duration);
+}
+
+function drawWaveform(data, energy, beats, drops, duration) {
+  const canvas = $('waveformCanvas'); const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * dpr; canvas.height = rect.height * dpr; ctx.scale(dpr, dpr);
+  const w = rect.width, h = rect.height;
+  ctx.fillStyle = '#0a0a0a'; ctx.fillRect(0, 0, w, h);
+  const step = Math.ceil(data.length / w);
+  ctx.strokeStyle = 'rgba(42,157,143,0.3)'; ctx.lineWidth = 1; ctx.beginPath();
+  for (let x = 0; x < w; x++) {
+    const start = x * step; let max = 0;
+    for (let i = 0; i < step && start + i < data.length; i++) { const v = Math.abs(data[start+i]); if (v > max) max = v; }
+    const y = h/2 - max * (h/2 - 4); if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke(); ctx.beginPath();
+  for (let x = 0; x < w; x++) {
+    const start = x * step; let max = 0;
+    for (let i = 0; i < step && start + i < data.length; i++) { const v = Math.abs(data[start+i]); if (v > max) max = v; }
+    const y = h/2 + max * (h/2 - 4); if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  const eStep = energy.length / w;
+  ctx.strokeStyle = 'rgba(217,108,74,0.4)'; ctx.lineWidth = 1.5; ctx.beginPath();
+  for (let x = 0; x < w; x++) { const idx = Math.floor(x * eStep); const y = h - (energy[idx] || 0) * h * 3; if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); }
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(42,157,143,0.2)'; beats.forEach(t => { const x = (t / duration) * w; ctx.fillRect(x, 0, 1, h); });
+  drops.forEach(d => { const x = (d.time / duration) * w; ctx.fillStyle = 'rgba(217,108,74,0.8)'; ctx.fillRect(x - 1, 0, 3, h); });
+}
+
+function clearMusic() {
+  if (state.musicAudio) { state.musicAudio.pause(); state.musicAudio = null; }
+  if (state.music) URL.revokeObjectURL(state.music.url);
+  state.music = null; state.musicBuffer = null; state.musicBeats = [];
+  state.musicDrops = []; state.musicEnergy = []; state.musicBpm = 0;
+  $('musicDropZone').style.display = 'block'; $('musicAnalysis').style.display = 'none'; $('vibeMatchResult').style.display = 'none';
+  toast('Music track removed');
+}
+$('musicVolume').addEventListener('input', (e) => { if (state.musicAudio) state.musicAudio.volume = e.target.value / 100; });
+$('musicOffset').addEventListener('input', (e) => { $('offsetVal').textContent = e.target.value + 's'; });
+
+function analyzeMusicVibe() {
+  if (!state.musicBuffer || !state.timeline.length) { toast('Need both music and timeline clips', 'error'); return; }
+  const totalVidDur = state.timeline.reduce((s, c) => s + ((c.outPoint || c.duration) - (c.inPoint || 0)), 0);
+  const musicDur = state.musicBuffer.duration; const bpm = state.musicBpm; const beatInterval = 60 / bpm;
+  const clipScores = state.timeline.map((c, i) => {
+    const dur = (c.outPoint || c.duration) - (c.inPoint || 0);
+    const hype = (1 / Math.max(dur, 0.5)) * (c.fps / 30) * (c.energy / 5);
+    return { idx: i, hype, dur };
+  });
+  clipScores.sort((a, b) => b.hype - a.hype);
+  let report = `🎵 VIBE MATCH ANALYSIS\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nMusic BPM: ${bpm} | Duration: ${formatTime(musicDur)}\nVideo total: ${formatTime(totalVidDur)} | Clips: ${state.timeline.length}\nBeat interval: ${beatInterval.toFixed(2)}s\n\n`;
+  if (state.musicDrops.length) {
+    report += `💥 DROP DETECTION:\n`;
+    state.musicDrops.forEach((d, i) => { report += `  Drop ${i+1} at ${formatTime(d.time)} (intensity: ${(d.intensity*100).toFixed(1)}%)\n`; });
+    report += `\n🎯 RECOMMENDATION:\n  Place your hypest clips at drop timestamps.\n  Use ${beatInterval.toFixed(2)}s cuts to match the beat.\n`;
+  } else { report += `🎯 RECOMMENDATION:\n  Steady energy track — no major drops.\n  Use ${beatInterval.toFixed(2)}s cuts to match the beat.\n`; }
+  report += `\n⚡ HYPEST CLIPS (assign to drops/beats):\n`;
+  clipScores.slice(0, 5).forEach((cs, i) => { const c = state.timeline[cs.idx]; report += `  ${i+1}. "${c.name}" — ${formatTime(cs.dur)} @ ${cs.hype.toFixed(2)} hype\n`; });
+  const el = $('vibeMatchResult'); el.style.display = 'block'; el.textContent = report;
+  toast('Vibe match analysis complete', 'success');
+}
+
+function syncToBeat() {
+  if (!state.musicBuffer || !state.timeline.length) { toast('Need music + clips', 'error'); return; }
+  if (!state.musicBpm) { toast('BPM not detected', 'error'); return; }
+  const beatInterval = 60 / state.musicBpm; const barInterval = beatInterval * 4;
+  state.timeline.forEach((c) => {
+    const dur = (c.outPoint || c.duration) - (c.inPoint || 0);
+    const bars = Math.max(1, Math.round(dur / barInterval));
+    const newDur = bars * barInterval;
+    c.outPoint = (c.inPoint || 0) + newDur;
+    if (c.outPoint > c.duration) c.outPoint = c.duration;
+  });
+  renderTimeline(); toast(`🔗 Snapped all clips to ${beatInterval.toFixed(2)}s beat grid`, 'success');
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  UI
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function updateUI() {
+  const hasClips = state.clips.length > 0; const hasTimeline = state.timeline.length > 0;
+  $('poolSection').style.display = hasClips ? 'block' : 'none';
+  $('timelineSection').style.display = hasTimeline ? 'block' : 'none';
+  $('previewSection').style.display = hasTimeline ? 'block' : 'none';
+  $('exportSection').style.display = hasTimeline ? 'block' : 'none';
+  // Music section: show only when clips exist (and it's a pro section, so also hidden in smart mode)
+  const musicSection = $('musicSection');
+  if (musicSection) musicSection.style.display = hasClips ? 'block' : 'none';
+  $('clipCount').textContent = `(${state.clips.length})`;
+  $('timelineCount').textContent = `(${state.timeline.length})`;
+  renderPool(); renderTimeline();
+}
+
+function renderPool() {
+  const pool = $('clipPool'); pool.innerHTML = '';
+  state.clips.forEach((clip) => {
+    const card = document.createElement('div');
+    card.className = 'clip-card' + (clip.proxyFrames ? ' has-proxy' : '');
+    card.draggable = true; card.dataset.id = clip.id;
+    let proxyHtml = '';
+    if (clip.proxyFrames && clip.proxyFrames.length) {
+      proxyHtml = `<div class="proxy-strip">` + clip.proxyFrames.map((f, i) => `<img class="proxy-frame" src="${f}" style="opacity:0" data-idx="${i}" />`).join('') + `</div>`;
+    }
+    const energyPct = (clip.energy / 10) * 100;
+    card.innerHTML = `
+      <div class="proxy-badge">Proxy</div>
+      <div class="dur-badge">${formatTime(clip.duration)}</div>
+      <div class="thumb">${clip.thumb ? `<img src="${clip.thumb}" alt="">` : '<span style="color:#333;font-size:0.7rem;">no thumb</span>'}${proxyHtml}</div>
+      <div class="info">
+        <div class="name">${clip.name}</div>
+        <div class="meta">${clip.width}×${clip.height} · ${clip.fps}fps</div>
+        <div class="meta">${formatSize(clip.size)} · ⚡${clip.energy}/10</div>
+      </div>
+      <div class="energy-bar"><div class="fill" style="width:${energyPct}%"></div></div>
+      <button class="add-btn" data-id="${clip.id}">+ TIMELINE</button>
+    `;
+    if (clip.proxyFrames && clip.proxyFrames.length) {
+      const frames = card.querySelectorAll('.proxy-frame');
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const pct = Math.max(0, Math.min(1, x / rect.width));
+        const idx = Math.floor(pct * frames.length);
+        frames.forEach((f, i) => { f.style.opacity = i === idx ? '1' : '0'; });
+      });
+      card.addEventListener('mouseleave', () => { frames.forEach(f => { f.style.opacity = '0'; }); });
+    }
+    card.addEventListener('dragstart', (e) => { e.dataTransfer.setData('text/plain', clip.id); card.classList.add('dragging'); });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+    card.querySelector('.add-btn').addEventListener('click', (e) => { e.stopPropagation(); addToTimeline(clip); });
+    card.addEventListener('dblclick', () => addToTimeline(clip));
+    pool.appendChild(card);
+  });
+}
+
+function renderTimeline() {
+  const track = $('timelineTrack');
+  if (!state.timeline.length) { track.innerHTML = `<div class="timeline-placeholder">Drop clips here to build your montage</div>`; return; }
+  track.innerHTML = '';
+  state.timeline.forEach((tclip, idx) => {
+    const el = document.createElement('div');
+    el.className = 'timeline-clip' + (idx === state.previewIndex ? ' active' : '');
+    el.draggable = true; el.dataset.idx = idx;
+    el.innerHTML = `
+      <button class="t-remove" onclick="removeFromTimeline(${idx})">✕</button>
+      <div class="t-thumb">${tclip.thumb ? `<img src="${tclip.thumb}">` : ''}</div>
+      <div class="t-info">
+        <span class="t-name">${tclip.name}</span>
+        <span class="t-dur">${formatTime((tclip.outPoint || tclip.duration) - (tclip.inPoint || 0))}</span>
+      </div>
+    `;
+    el.addEventListener('dragstart', (e) => { e.dataTransfer.setData('text/timeline-idx', idx); el.style.opacity = '0.4'; });
+    el.addEventListener('dragend', () => { el.style.opacity = '1'; });
+    el.addEventListener('dragover', (e) => e.preventDefault());
+    el.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const fromIdx = parseInt(e.dataTransfer.getData('text/timeline-idx'));
+      const toIdx = idx;
+      if (isNaN(fromIdx) || fromIdx === toIdx) return;
+      const item = state.timeline.splice(fromIdx, 1)[0];
+      state.timeline.splice(toIdx, 0, item);
+      renderTimeline();
+    });
+    track.appendChild(el);
+  });
+  track.addEventListener('dragover', (e) => e.preventDefault());
+  track.addEventListener('drop', (e) => {
+    const clipId = e.dataTransfer.getData('text/plain');
+    if (clipId) { const clip = state.clips.find(c => c.id === clipId); if (clip) addToTimeline(clip); }
+  });
+}
+
+function addToTimeline(clip) {
+  state.timeline.push({ ...clip, timelineId: 't_' + Math.random().toString(36).slice(2, 8) });
+  updateUI(); toast(`➕ Added "${clip.name}"`);
+}
+function removeFromTimeline(idx) {
+  const name = state.timeline[idx]?.name || 'clip';
+  state.timeline.splice(idx, 1);
+  if (state.previewIndex >= state.timeline.length) state.previewIndex = 0;
+  updateUI(); toast(`✕ Removed "${name}"`);
+}
+function clearTimeline() {
+  state.timeline = []; state.isPlaying = false;
+  if (state.musicAudio) { state.musicAudio.pause(); state.musicAudio.currentTime = 0; }
+  updateUI(); toast('Timeline cleared');
+}
+function clearAll() {
+  state.clips.forEach(c => URL.revokeObjectURL(c.url));
+  state.clips = []; state.timeline = []; state.isPlaying = false;
+  if (state.musicAudio) { state.musicAudio.pause(); state.musicAudio = null; }
+  updateUI(); toast('All clips cleared');
+}
+function shuffleTimeline() { state.timeline.sort(() => Math.random() - 0.5); renderTimeline(); toast('🔀 Shuffled timeline'); }
+function sortClips(mode) {
+  if (!state.clips.length) return;
+  switch (mode) {
+    case 'duration': state.clips.sort((a, b) => a.duration - b.duration); break;
+    case 'durationDesc': state.clips.sort((a, b) => b.duration - a.duration); break;
+    case 'resolution': state.clips.sort((a, b) => (b.width * b.height) - (a.width * a.height)); break;
+    case 'random': state.clips.sort(() => Math.random() - 0.5); break;
+    case 'energy': state.clips.sort((a, b) => b.energy - a.energy); break;
+  }
+  renderPool(); toast(`Sorted: ${mode}`);
+}
+$$('.preset-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const res = chip.dataset.res, fps = chip.dataset.fps, crf = chip.dataset.crf;
+    if (res) $('targetRes').value = res; if (fps) $('targetFps').value = fps; if (crf) $('targetCrf').value = crf;
+    $$('.preset-chip').forEach(c => c.classList.remove('active')); chip.classList.add('active');
+    toast(`Preset: ${chip.textContent.trim()}`, 'success');
+  });
+});
+
+function clearConfig() {
+  state.currentConfig = null;
+  $('configOutput').className = 'config-output';
+  $('configOutput').textContent = '';
+  $('configActions').style.display = 'none';
+  toast('Config cleared');
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  PREVIEW
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const previewVideo = $('previewVideo');
+let previewRAF = null;
+function playTimeline() {
+  if (!state.timeline.length) { toast('Timeline is empty', 'error'); return; }
+  state.isPlaying = true; state.previewIndex = 0;
+  if (state.musicAudio) { const offset = parseFloat($('musicOffset').value) || 0; state.musicAudio.currentTime = offset; state.musicAudio.play().catch(()=>{}); }
+  playClip(0);
+}
+function playClip(idx) {
+  if (idx >= state.timeline.length || !state.isPlaying) {
+    state.isPlaying = false; $('previewStatus').textContent = '⏹ Finished';
+    if (state.musicAudio && !$('musicLoop').checked) state.musicAudio.pause();
+    else if (state.musicAudio && $('musicLoop').checked) { state.musicAudio.currentTime = parseFloat($('musicOffset').value) || 0; state.musicAudio.play().catch(()=>{}); }
+    if (previewRAF) cancelAnimationFrame(previewRAF); return;
+  }
+  state.previewIndex = idx; renderTimeline();
+  const clip = state.timeline[idx];
+  previewVideo.src = clip.url; previewVideo.currentTime = clip.inPoint || 0;
+  previewVideo.play().catch(() => {}); $('previewStatus').textContent = `▶ ${clip.name}`;
+  function checkTime() {
+    if (!state.isPlaying) { if (previewRAF) cancelAnimationFrame(previewRAF); return; }
+    const cur = previewVideo.currentTime; const end = clip.outPoint || clip.duration;
+    const totalDur = state.timeline.reduce((s, c) => s + ((c.outPoint || c.duration) - (c.inPoint || 0)), 0);
+    const elapsed = state.timeline.slice(0, idx).reduce((s, c) => s + ((c.outPoint || c.duration) - (c.inPoint || 0)), 0) + (cur - (clip.inPoint || 0));
+    $('previewTime').textContent = `${formatTime(elapsed)} / ${formatTime(totalDur)}`;
+    if (cur >= end - 0.05) { previewVideo.pause(); playClip(idx + 1); } else { previewRAF = requestAnimationFrame(checkTime); }
+  }
+  if (previewRAF) cancelAnimationFrame(previewRAF); previewRAF = requestAnimationFrame(checkTime);
+}
+function stopPreview() {
+  state.isPlaying = false; previewVideo.pause();
+  if (state.musicAudio) state.musicAudio.pause();
+  $('previewStatus').textContent = '⏹ Stopped';
+  if (previewRAF) cancelAnimationFrame(previewRAF);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  VIBE ENGINE — expanded with extra keywords
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const VIBE_MAP = {
+  hype: { energy: +3, cutMs: -400 }, fast: { energy: +2, cutMs: -300 }, chaos: { energy: +3, cutMs: -600 },
+  crazy: { energy: +2, cutMs: -300 }, wasted: { energy: +2, cutMs: -200 }, wild: { energy: +2, cutMs: -300 },
+  intense: { energy: +2, cutMs: -200 }, aggressive: { energy: +2, cutMs: -300 }, energetic: { energy: +2, cutMs: -200 },
+  dynamic: { energy: +2, cutMs: -200 }, sporty: { energy: +1, cutMs: -100 },
+  chill: { energy: -2, cutMs: +600 }, mellow: { energy: -2, cutMs: +800 }, slow: { energy: -3, cutMs: +1000 },
+  smooth: { energy: -1, cutMs: +400 }, laidback: { energy: -2, cutMs: +600 }, calm: { energy: -3, cutMs: +800 },
+  peaceful: { energy: -2, cutMs: +600 }, serene: { energy: -2, cutMs: +400 }, nature: { energy: -1, cutMs: +200 },
+  stoner: { energy: -1, cutMs: +400 }, vibey: { energy: -1, cutMs: +200 },
+  psychonaut: { energy: +1, cutMs: -100 }, trippy: { energy: +1, cutMs: -100 }, psychedelic: { energy: +1, cutMs: -100 },
+  colorful: { energy: 0, cutMs: 0 }, vibrant: { energy: 0, cutMs: 0 }, warm: { energy: 0, cutMs: 0 }, golden: { energy: 0, cutMs: 0 },
+  gritty: { energy: +1, cutMs: -100 }, dark: { energy: +1, cutMs: -100 },
+  metal: { energy: +2, cutMs: -300 }, skater: { energy: +2, cutMs: -200 }, punk: { energy: +2, cutMs: -300 },
+  random: { order: 'random' }, surprise: { order: 'random' }, shuffle: { order: 'random' }, mixed: { order: 'random' },
+  'short-first': { order: 'short-first' }, 'long-first': { order: 'long-first' }, 'energy-sorted': { order: 'energy-sorted' },
+  vertical: { resolution: '1080x1920' }, reel: { resolution: '1080x1920' }, tiktok: { resolution: '1080x1920' },
+  shorts: { resolution: '1080x1920' }, phone: { resolution: '1080x1920' }, portrait: { resolution: '1080x1920' },
+  widescreen: { resolution: '1920x1080' }, youtube: { resolution: '1920x1080' },
+  square: { resolution: '1080x1080' }, instagram: { resolution: '1080x1080' },
+  '4k': { resolution: '3840x2160' }, uhd: { resolution: '3840x2160' }, ultra: { resolution: '3840x2160' },
+  '60fps': { fps: '60' }, silky: { fps: '60' }, smooth: { fps: '60' },
+  '24fps': { fps: '24' }, cinematic: { fps: '24' }, film: { fps: '24' }, movie: { fps: '24' }, cinema: { fps: '24' },
+  glitch: { transition: 'glitch-cut' }, stutter: { transition: 'glitch-cut' }, experimental: { transition: 'glitch-cut' },
+  fade: { transition: 'crossfade' }, dissolve: { transition: 'crossfade' },
+  hard: { transition: 'hard cut' }, sharp: { transition: 'hard cut' }, raw: { transition: 'hard cut' },
+  mute: { audio: 'mute' }, silent: { audio: 'mute' }, instrumental: { audio: 'mute' },
+  replace: { audio: 'music' }, bgm: { audio: 'music' }, mix: { audio: 'mix' }, blend: { audio: 'mix' }, both: { audio: 'mix' },
+  // additional common terms
+  adventurous: { energy: +1, cutMs: -100 }, outdoor: { energy: 0, cutMs: 0 },
+  'road trip': { energy: 0, cutMs: 0 }, vacation: { energy: 0, cutMs: 0 },
+  family: { energy: 0, cutMs: 0 }, friends: { energy: 0, cutMs: 0 },
+  party: { energy: +1, cutMs: -100 }, celebration: { energy: +1, cutMs: -50 },
+};
+
+function parseVibe(text) {
+  let energy = 5, cutMs = 2000, order = 'as-is', resolution = '1080x1920', fps = '30', transition = 'hard cut', filter = 'none', audio = 'mix';
+  const words = text.toLowerCase().split(/\s+/);
+  for (const word of words) {
+    const rule = VIBE_MAP[word]; if (!rule) continue;
+    if (rule.energy !== undefined) energy += rule.energy;
+    if (rule.cutMs !== undefined) cutMs += rule.cutMs;
+    if (rule.order) order = rule.order;
+    if (rule.resolution) resolution = rule.resolution;
+    if (rule.fps) fps = rule.fps;
+    if (rule.transition) transition = rule.transition;
+    if (rule.audio) audio = rule.audio;
+  }
+  const bpmMatch = text.match(/(\d+)\s*bpm/);
+  let bpmEstimate = state.musicBpm || 120;
+  if (bpmMatch) { bpmEstimate = parseInt(bpmMatch[1]); cutMs = Math.round((60 / bpmEstimate) * 1000 * 2); }
+  energy = Math.max(1, Math.min(10, energy)); cutMs = Math.max(400, Math.min(6000, cutMs));
+  if (order === 'as-is') { if (energy > 7) order = 'energy-sorted'; else if (energy < 4) order = 'long-first'; }
+  if (audio === 'mix' && state.music) audio = 'mix'; else if (audio === 'music' && !state.music) audio = 'keep';
+  // Determine CRF based on energy: high energy → better quality (lower CRF)
+  let crf = 23;
+  if (energy > 7) crf = 23;
+  else if (energy > 4) crf = 26;
+  else crf = 28;
+  return { energy, order, resolution, fps, transition, filter, audio, cutMs, bpmEstimate, crf };
+}
+
+function generateConfig() {
+  const prompt = $('vibePrompt').value.trim();
+  if (!prompt) { toast('Enter a vibe prompt first', 'error'); return; }
+  const parsed = parseVibe(prompt);
+  const segmentPlan = state.timeline.map((clip) => {
+    const dur = (clip.outPoint || clip.duration) - (clip.inPoint || 0);
+    const targetDur = Math.min(dur * 1000, parsed.cutMs);
+    return { clipId: clip.id, start: clip.inPoint || 0, end: clip.outPoint || clip.duration, targetDurMs: Math.round(targetDur), reason: parsed.energy > 6 ? 'high energy clip' : 'standard clip' };
+  });
+  let planClips = segmentPlan.length > 0 ? segmentPlan : state.clips.map((clip) => {
+    const dur = clip.duration; const targetDur = Math.min(dur * 1000, parsed.cutMs);
+    return { clipId: clip.id, start: 0, end: dur, targetDurMs: Math.round(targetDur), reason: 'auto-added from pool' };
+  });
+  if (parsed.order === 'random') planClips.sort(() => Math.random() - 0.5);
+  else if (parsed.order === 'short-first') planClips.sort((a, b) => (a.end - a.start) - (b.end - b.start));
+  else if (parsed.order === 'long-first') planClips.sort((a, b) => (b.end - b.start) - (a.end - a.start));
+  else if (parsed.order === 'energy-sorted') {
+    const energyMap = {}; state.clips.forEach(c => { energyMap[c.id] = c.energy || 5; });
+    planClips.sort((a, b) => (energyMap[b.clipId] || 5) - (energyMap[a.clipId] || 5));
+  }
+  const config = {
+    energyLevel: parsed.energy,
+    orderStrategy: parsed.order,
+    targetAspect: parsed.resolution === '1080x1920' || parsed.resolution === '720x1280' ? '9:16' : parsed.resolution === '1920x1080' || parsed.resolution === '3840x2160' ? '16:9' : parsed.resolution === '1080x1080' ? '1:1' : '9:16',
+    pacing: { bpmEstimate: parsed.bpmEstimate || state.musicBpm || 120, cutLengthMs: parsed.cutMs },
+    music: { mode: parsed.audio },
+    fps: parsed.fps,
+    crf: parsed.crf,
+    segmentPlan: planClips
+  };
+  state.currentConfig = config;
+  const out = $('configOutput'); out.className = 'config-output show';
+  out.textContent = JSON.stringify(config, null, 2);
+  $('configActions').style.display = 'flex';
+  toast('🧠 Config generated — hit Apply or Re-roll', 'success');
+}
+
+function regenerateConfig() { if (!$('vibePrompt').value.trim()) { toast('Enter a prompt first', 'error'); return; } generateConfig(); }
+
+function applyConfig() {
+  const cfg = state.currentConfig; if (!cfg) { toast('Generate a config first', 'error'); return; }
+  const newTimeline = []; const clipMap = {}; state.clips.forEach(c => { clipMap[c.id] = c; });
+  for (const seg of cfg.segmentPlan) {
+    const clip = clipMap[seg.clipId];
+    if (clip) newTimeline.push({ ...clip, inPoint: seg.start, outPoint: seg.end, timelineId: 't_' + Math.random().toString(36).slice(2, 8) });
+  }
+  if (newTimeline.length > 0) state.timeline = newTimeline; else { toast('No matching clips found in pool', 'error'); return; }
+  const resMap = { '9:16': '1080x1920', '16:9': '1920x1080', '1:1': '1080x1080' };
+  $('targetRes').value = resMap[cfg.targetAspect] || '1080x1920';
+  const audioModeMap = { 'keep': 'keep', 'mute': 'mute', 'music': 'music', 'mix': 'mix' };
+  $('audioMode').value = audioModeMap[cfg.music.mode] || 'mix';
+  // Also set FPS and CRF from config
+  if (cfg.fps) $('targetFps').value = cfg.fps;
+  if (cfg.crf) $('targetCrf').value = cfg.crf;
+  renderTimeline(); updateUI(); toast('✅ Config applied', 'success');
+}
+
+function toggleGuide() { $('guideContent').classList.toggle('active'); }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  SMART RENDER
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function smartRender() {
+  if (!state.timeline.length) { toast('Timeline is empty', 'error'); return; }
+  const prompt = $('vibePrompt').value.trim();
+  if (prompt) state.currentConfig = parseVibe(prompt.toLowerCase());
+  else state.currentConfig = { order: 'as-is', resolution: '1080x1920', fps: '30', transition: 'hard cut', filter: 'none', audio: 'keep', cutMs: 2000, bpmEstimate: 120, energy: 5, crf: 23 };
+  applyConfig(); toast('⚡ Smart rendering with auto-config...', 'success'); await startExport();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  FFMPEG EXPORT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function loadFFmpeg() {
+  if (state.ffmpegLoaded) return;
+  if (state.ffmpegLoading) { toast('FFmpeg already loading...'); return; }
+  state.ffmpegLoading = true;
+  if (typeof SharedArrayBuffer === 'undefined') {
+    toast('⚠️ SharedArrayBuffer not available. Render may fail. Try Chrome/Edge.', 'error');
+    logProgress('WARNING: SharedArrayBuffer missing. Using fallback mode.');
+  }
+  toast('⏳ Loading FFmpeg.wasm (~31MB)...'); logProgress('Initializing FFmpeg...');
+  try {
+    state.ffmpeg = new FFmpeg.FFmpeg();
+    state.ffmpeg.on('log', ({ message }) => {
+      const timeMatch = message.match(/time=(\d+:\d+:\d+\.\d+)/);
+      if (timeMatch) $('progressText').textContent = '⏳ Encoding: ' + timeMatch[1];
+      if (message.includes('frame=') || message.includes('size=')) logProgress(message.trim().slice(0, 80));
+    });
+    await state.ffmpeg.load({
+      coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
+      wasmURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm'
+    });
+    state.ffmpegLoaded = true; state.ffmpegLoading = false;
+    toast('✅ FFmpeg ready', 'success'); logProgress('FFmpeg loaded successfully');
+  } catch (err) {
+    state.ffmpegLoading = false; console.error('FFmpeg load error:', err);
+    toast('❌ FFmpeg failed to load: ' + err.message, 'error'); logProgress('ERROR: ' + err.message); throw err;
+  }
+}
+
+function cancelExport() { state.cancelRender = true; toast('⏹ Cancelling render...'); logProgress('Render cancelled by user'); }
+
+async function startExport() {
+  if (!state.timeline.length) { toast('Timeline is empty', 'error'); return; }
+  state.cancelRender = false; state.renderStartTime = Date.now(); state.renderStep = 0;
+  $('progressWrap').classList.add('show'); $('progressFill').style.width = '0%';
+  $('progressText').textContent = '⏳ Loading FFmpeg (first time only)...';
+  $('progressEta').textContent = ''; $('progressLog').textContent = '';
+  $('downloadArea').classList.remove('show'); $('exportBtn').disabled = true;
+  try {
+    await loadFFmpeg(); if (state.cancelRender) return;
+    const ffmpeg = state.ffmpeg; const { fetchFile } = FFmpegUtil;
+    const res = $('targetRes').value.split('x');
+    const targetW = parseInt(res[0]), targetH = parseInt(res[1]);
+    const targetFps = $('targetFps').value; const crf = $('targetCrf').value; const audioMode = $('audioMode').value;
+    const totalClips = state.timeline.length; const tempFiles = [];
+    for (let i = 0; i < totalClips; i++) {
+      if (state.cancelRender) { toast('Render cancelled'); return; }
+      const clip = state.timeline[i]; const inputName = `in_${i}.mp4`; const outputName = `norm_${i}.mp4`;
+      const pct = Math.round((i / totalClips) * 45);
+      $('progressFill').style.width = pct + '%';
+      $('progressText').textContent = `🎞 Normalizing clip ${i+1}/${totalClips}: ${clip.name}`;
+      logProgress(`Writing ${clip.name} to virtual FS...`);
+      ffmpeg.writeFile(inputName, await fetchFile(clip.file));
+      const start = clip.inPoint || 0; const dur = (clip.outPoint || clip.duration) - start;
+      const args = [
+        '-i', inputName, '-ss', String(start), '-t', String(dur), '-vf',
+        `scale=${targetW}:${targetH}:force_original_aspect_ratio=decrease,pad=${targetW}:${targetH}:(ow-iw)/2:(oh-ih)/2:black,fps=${targetFps},format=yuv420p`,
+        '-c:v', 'libx264', '-preset', 'fast', '-crf', crf, '-pix_fmt', 'yuv420p'
+      ];
+      if (audioMode === 'mute') args.push('-an');
+      else args.push('-c:a', 'aac', '-b:a', '128k', '-ar', '48000');
+      args.push('-y', outputName);
+      logProgress(`Encoding ${clip.name}...`);
+      await ffmpeg.exec(args); tempFiles.push(outputName); logProgress(`✓ ${clip.name} done`);
+      try { ffmpeg.deleteFile(inputName); } catch (_) {}
+    }
+    if (state.cancelRender) { toast('Render cancelled'); return; }
+    $('progressText').textContent = '🔗 Stitching clips together...'; $('progressFill').style.width = '50%';
+    logProgress('Creating concat list...');
+    const concatList = tempFiles.map(f => `file '${f}'`).join('\n');
+    ffmpeg.writeFile('concat.txt', new TextEncoder().encode(concatList));
+    await ffmpeg.exec(['-f', 'concat', '-safe', '0', '-i', 'concat.txt', '-c', 'copy', '-y', 'video_only.mp4']);
+    logProgress('Video stitched'); $('progressFill').style.width = '55%';
+    if (state.cancelRender) { toast('Render cancelled'); return; }
+    const hasMusic = state.music && state.music.file; const musicOffset = parseFloat($('musicOffset').value) || 0;
+    const musicVol = parseFloat($('exportMusicVol').value) / 100 || 0.7; const origVol = parseFloat($('exportOrigVol').value) / 100 || 0.3;
+    if ((audioMode === 'music' || audioMode === 'mix') && hasMusic) {
+      $('progressText').textContent = '🎵 Mixing audio...'; logProgress('Loading music track...');
+      ffmpeg.writeFile('music_track.mp3', await fetchFile(state.music.file));
+      let filterComplex = '', maps = [];
+      if (audioMode === 'music') {
+        filterComplex = `[1:a]atrim=start=${musicOffset},asetpts=PTS-STARTPTS,volume=${musicVol}[music];[music]aloop=loop=-1:size=2e+09[looped]`;
+        maps = ['-map', '0:v', '-map', '[looped]', '-shortest'];
+      } else {
+        filterComplex = `[0:a]volume=${origVol}[orig];[1:a]atrim=start=${musicOffset},asetpts=PTS-STARTPTS,volume=${musicVol}[music];[orig][music]amix=inputs=2:duration=first:dropout_transition=3[aout]`;
+        maps = ['-map', '0:v', '-map', '[aout]', '-shortest'];
+      }
+      logProgress('Running audio mix...');
+      await ffmpeg.exec(['-i', 'video_only.mp4', '-i', 'music_track.mp3', '-filter_complex', filterComplex, ...maps, '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-y', 'output.mp4']);
+      try { ffmpeg.deleteFile('music_track.mp3'); } catch (_) {}
+    } else if (audioMode === 'mute') {
+      $('progressText').textContent = '🔇 Removing audio...';
+      await ffmpeg.exec(['-i', 'video_only.mp4', '-c', 'copy', '-an', '-y', 'output.mp4']);
+    } else { await ffmpeg.exec(['-i', 'video_only.mp4', '-c', 'copy', '-y', 'output.mp4']); }
+    if (state.cancelRender) { toast('Render cancelled'); return; }
+    $('progressFill').style.width = '100%'; $('progressText').textContent = '✅ Done!';
+    const elapsed = ((Date.now() - state.renderStartTime) / 1000 / 60).toFixed(1);
+    logProgress(`Render complete in ${elapsed} minutes`);
+    const data = await ffmpeg.readFile('output.mp4');
+    const blob = new Blob([data.buffer], { type: 'video/mp4' }); const url = URL.createObjectURL(blob);
+    const dlArea = $('downloadArea'); dlArea.classList.add('show');
+    dlArea.innerHTML = `
+      <div class="download-card">
+        <div class="big">🔥 YOUR MONTAGE IS READY</div>
+        <div style="font-size:0.85rem;color:#8a7f72;margin-bottom:12px">Rendered in ${elapsed} min • ${(blob.size / 1e6).toFixed(1)} MB • Zero watermark</div>
+        <a href="${url}" download="RAW_CUT_montage_${Date.now()}.mp4">⬇ DOWNLOAD .MP4</a>
+        <div class="size">${formatSize(blob.size)}</div>
+      </div>
+    `;
+    toast('🎉 Export complete! No watermarks. No limits.', 'success');
+    tempFiles.forEach(f => { try { ffmpeg.deleteFile(f); } catch (_) {} });
+    try { ffmpeg.deleteFile('concat.txt'); } catch (_) {}
+    try { ffmpeg.deleteFile('video_only.mp4'); } catch (_) {}
+    try { ffmpeg.deleteFile('output.mp4'); } catch (_) {}
+  } catch (err) {
+    console.error(err); $('progressText').textContent = '❌ Error: ' + (err.message || 'Unknown error');
+    $('progressEta').textContent = 'Check browser console (F12) for details';
+    logProgress('FATAL ERROR: ' + (err.message || 'Unknown')); toast('Export failed — see console', 'error');
+  } finally { $('exportBtn').disabled = false; state.cancelRender = false; }
+}
+function exportTimeline() { startExport(); }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  INIT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+updateUI();
+$('vibePrompt').value = 'psychonaut cliff jump stoner metal skater hype fast cuts vertical reel';
+</script>
+</body>
+</html>
